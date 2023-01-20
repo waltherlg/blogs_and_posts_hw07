@@ -1,0 +1,5 @@
+/.env
+/src/settings.ts
+/node_modules
+/dist
+/.idea
