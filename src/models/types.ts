@@ -38,12 +38,15 @@ export type blogType = {
 }
 
 export type userType = {
-    _id: string | ObjectId
+    _id: ObjectId
     login: string
     passwordHash: string
     passwordSalt: string
     email: string
     createdAt: string
+    confirmationCode: string
+    expirationDate: any,
+    isConfirmed: boolean
 }
 export type userTypeOutput = {
     id: string | ObjectId

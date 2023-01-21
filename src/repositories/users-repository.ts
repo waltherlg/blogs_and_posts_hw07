@@ -45,9 +45,22 @@ export const usersRepository = {
         return user
     },
 
-    async findUserByLoginOrEmail(loginOrEmail: string): Promise<userType | null>{ // вопрос
+    async getUserByConfirmationCode(code: string): Promise<userType | null> {
+        const user: userType | null = await usersCollection.findOne({confirmationCode: code})
+        if (!user){
+            return null
+        }
+        return user
+    },
+
+    async findUserByLoginOrEmail(loginOrEmail: string): Promise<userType | null>{
         const user = await usersCollection.findOne({$or: [{email: loginOrEmail}, {login: loginOrEmail}]})
         return user
+    },
+
+    async updateConfirmation(_id: ObjectId) {
+        let result = await usersCollection.updateOne({_id}, {$set: {isConfirmed: true} })
+        return result.modifiedCount === 1
     }
 
 

@@ -17,7 +17,7 @@ const port = process.env.PORT || 3000
 
 app.use(bodyParser.json());
 
-app.use('/testing/all-data', testingRouter)
+app.use('/testing', testingRouter)
 app.use('/blogs', blogsRouter)
 app.use('/posts', postsRouter)
 app.use('/users', usersRouter)

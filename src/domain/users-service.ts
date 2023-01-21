@@ -2,6 +2,8 @@ import {ObjectId} from "mongodb";
 import {userType, userTypeOutput} from "../models/types";
 import {usersRepository} from "../repositories/users-repository";
 import * as bcrypt from 'bcrypt'
+import {v4 as uuid4} from 'uuid'
+import add from 'date-fns/add'
 
 export const usersService = {
 
@@ -16,7 +18,10 @@ export const usersService = {
             passwordHash,
             passwordSalt,
             "email": email,
-            "createdAt": new Date().toISOString()
+            "createdAt": new Date().toISOString(),
+            "confirmationCode": "none",
+            "expirationDate": null,
+            "isConfirmed": true
         }
         const createdUser = await usersRepository.createUser(newUser)
         return createdUser

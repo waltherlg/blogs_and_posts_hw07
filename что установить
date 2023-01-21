@@ -40,3 +40,11 @@ yarn add jsonwebtoken //
 yarn add @types/jsonwebtoken -D //
 
 yarn add mongodb //
+
+yarn add nodemailer // для отправки письма
+yarn add @types/nodemailer
+
+yarn add uuid // генерация кодов
+yarn add @types/uuid -D
+
+yarn add date-fns

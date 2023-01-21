@@ -8,14 +8,14 @@ import {commentService} from "../domain/comment-service";
 
 export const testingRouter = Router({})
 
-testingRouter.delete('/',
+testingRouter.delete('/all-data',
     async (req: Request, res: Response) => {
         console.log(req)
         const isPostsDeleted = await postsService.deleteAllPosts();
         const isBlogsDeleted = await blogsService.deleteAllBlogs();
         const isUsersDeleted = await usersService.deleteAllUsers();
-        //const isCommentsDeleted = await commentService.
-        if (isPostsDeleted && isBlogsDeleted && isUsersDeleted) {
+        const isCommentsDeleted = await commentService.deleteAllComments();
+        if (isPostsDeleted && isBlogsDeleted && isUsersDeleted && isCommentsDeleted) {
             return res.sendStatus(204)
         } else {
             res.sendStatus(404);

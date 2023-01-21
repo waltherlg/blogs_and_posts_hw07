@@ -83,15 +83,6 @@ export const existBlogIdValidation = body('blogId')
         return true
     }).withMessage({"message": "blogId not exist", "field": "blogId" })
 
-export const existParamBlogIdValidation = param('blogId')
-    .exists().bail().withMessage({message: "is not a string", field: "blogId" })
-    .trim().bail().withMessage({message: "wrong blogId", field: "blogId" })
-    .custom(async value => {
-        const isBlogIdExist = await blogsService.getBlogByID(value)
-        if (!isBlogIdExist) throw new Error
-        return true
-    }).withMessage({"message": "blogId not exist", "field": "blogId" })
-
 export const commentContentValodation = body('content')
     .exists().bail().withMessage({message: "content not exist", field: "content" })
     .trim().bail().withMessage({message: "content is not string", field: "content" })
