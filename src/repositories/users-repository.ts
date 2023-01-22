@@ -61,6 +61,11 @@ export const usersRepository = {
     async updateConfirmation(_id: ObjectId) {
         let result = await usersCollection.updateOne({_id}, {$set: {isConfirmed: true} })
         return result.modifiedCount === 1
+    },
+
+    async refreshConfirmationCode(refreshConfirmationData: any){
+        let result = await usersCollection.updateOne({email: refreshConfirmationData.email}, {$set: {confirmationCode: refreshConfirmationData.confirmationCode, expirationDate: refreshConfirmationData.expirationDate}})
+        return result.modifiedCount === 1
     }
 
 

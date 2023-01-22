@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer";
 import * as dotenv from 'dotenv'
 dotenv.config()
-const ProtonMail = require('protonmail-api')
 
 const emailUser = process.env.MAIL_USER
 const emailPassword = process.env.MAIL_PASSWORD

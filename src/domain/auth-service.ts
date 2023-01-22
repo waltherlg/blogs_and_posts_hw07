@@ -55,5 +55,24 @@ export const authService = {
         const hash = await bcrypt.hash(password, salt)
         return hash
     },
+
+    async registrationEmailResending(email: string){
+        const refreshConfirmationData = {
+            "email": email,
+            "confirmationCode": uuid4(),
+            "expirationDate": add(new Date(),{
+                hours: 1
+                //minutes: 3
+            }),
+        }
+        try {
+            await emailManager.resendEmailConfirmationMessage(refreshConfirmationData)
+        }
+        catch (e) {
+            return null
+        }
+        let result = await usersRepository.refreshConfirmationCode(refreshConfirmationData)
+        return result
+    }
 }
 

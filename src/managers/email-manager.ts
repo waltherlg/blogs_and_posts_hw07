@@ -6,6 +6,10 @@ export const emailManager = {
     },
 
     async sendEmailConfirmationMessage(user: any){
-        await emailAdapter.sendEmail(user.email, "confirmation", "<div>${user.confirmationCode}message</div>div>")
+        await emailAdapter.sendEmail(user.email, "confirmation code", user.confirmationCode)
+    },
+
+    async resendEmailConfirmationMessage(refreshConfirmationData: any){
+        await emailAdapter.sendEmail(refreshConfirmationData.email, "resending confirmation code", refreshConfirmationData.confirmationCode)
     }
 }
