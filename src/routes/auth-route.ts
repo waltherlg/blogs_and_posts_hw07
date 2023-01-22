@@ -5,13 +5,13 @@ import {userAuthModel, userInputModel} from "../models/users-models";
 import {jwtService} from "../application/jwt-service";
 import {authMiddleware} from "../middlewares/basic-auth.middleware";
 import {
+    emailResendingValidation,
     emailValidation,
     inputValidationMiddleware,
     loginValidation, passwordValidation
 } from "../middlewares/input-validation-middleware/input-validation-middleware";
-import {emailAdapter} from "../adapters/email-adapter";
 import {authService} from "../domain/auth-service";
-const nodemailer = require("nodemailer")
+
 
 export const authRouter = Router({})
 
@@ -34,6 +34,8 @@ authRouter.post('/registration',
     })
 
 authRouter.post('/registration-email-resending',
+    emailResendingValidation,
+    inputValidationMiddleware,
     async (req: Request, res: Response) => {
         const result = await authService.registrationEmailResending(req.body.email)
         if (result) {

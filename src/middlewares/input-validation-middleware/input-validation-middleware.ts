@@ -3,6 +3,7 @@ import {NextFunction, Request, Response} from "express";
 import {body, validationResult} from "express-validator";
 import {param} from "express-validator";
 import {blogsService} from "../../domain/blogs-service";
+import {usersService} from "../../domain/users-service";
 
 
 
@@ -27,6 +28,11 @@ export const loginValidation = body('login')
     .trim().bail().withMessage({"message": "login is not string", "field": "login" })
     .isLength({min: 3, max: 10}).bail().withMessage({"message": "wrong length login", "field": "login" })
     .matches('^[a-zA-Z0-9_-]*$').bail().withMessage({"message": "wrong symbols in login", "field": "login" })
+    .custom(async value => {
+        const isLoginExist = await usersService.isLoginExist(value)
+        if (isLoginExist) throw new Error
+        return true
+    }).withMessage({"message": "login already exist", "field": "login" })
 
 export const passwordValidation = body('password')
     .exists({checkFalsy: true, checkNull: true}).bail().withMessage({"message": "write your password", "field": "password" })
@@ -39,6 +45,27 @@ export const emailValidation = body('email')
     .notEmpty().bail().withMessage({"message": "email is empty", "field": "email"})
     .trim().bail().withMessage({"message": "email is not string", "field": "email" })
     .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).bail().withMessage({"message": "wrong symbols in email", "field": "email" })
+    .custom(async value => {
+        const isEmailExist = await usersService.isEmailExist(value)
+        if (isEmailExist) throw new Error
+        return true
+    }).withMessage({"message": "email already exist", "field": "email" })
+
+export const emailResendingValidation = body('email')
+    .exists({checkFalsy: true, checkNull: true}).bail().withMessage({"message": "write your email", "field": "email" })
+    .notEmpty().bail().withMessage({"message": "email is empty", "field": "email"})
+    .trim().bail().withMessage({"message": "email is not string", "field": "email" })
+    .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).bail().withMessage({"message": "wrong symbols in email", "field": "email" })
+    .custom(async value => {
+        const isEmailExist = await usersService.isEmailExist(value)
+        if (!isEmailExist) throw new Error
+        return true
+    }).bail().withMessage({"message": "email not exist", "field": "email" })
+    .custom(async value => {
+        const isEmailConfirmed = await usersService.isEmailConfirmed(value)
+        if (isEmailConfirmed) throw new Error
+        return true
+    }).bail().withMessage({"message": "email already confirmed", "field": "email" })
 
 // validation for blog
 export const nameValidation = body('name')
@@ -83,7 +110,7 @@ export const existBlogIdValidation = body('blogId')
         return true
     }).withMessage({"message": "blogId not exist", "field": "blogId" })
 
-export const commentContentValodation = body('content')
+export const commentContentValidation = body('content')
     .exists().bail().withMessage({message: "content not exist", field: "content" })
     .trim().bail().withMessage({message: "content is not string", field: "content" })
     .isLength({min: 20, max: 300}).bail().withMessage({message: "wrong content length", field: "content" })

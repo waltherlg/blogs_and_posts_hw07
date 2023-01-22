@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import {validationResult} from "express-validator";
 import {commentService} from "../domain/comment-service";
+import {usersService} from "../domain/users-service";
 
 
 export const isUserOwnerOfComments = async (req: Request, res: Response, next: NextFunction) => {
@@ -16,4 +17,9 @@ export const isUserOwnerOfComments = async (req: Request, res: Response, next: N
         return
     }
     next()
+}
+
+export const isLoginExist = async (req: Request, res: Response, next: NextFunction) => {
+    const LoginExist = usersService.isLoginExist(req.body.login)
+
 }

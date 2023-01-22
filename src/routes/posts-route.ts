@@ -23,7 +23,7 @@ import {
 export const postsRouter = Router({})
 
 import {
-    commentContentValodation,
+    commentContentValidation,
     inputValidationMiddleware
 } from "../middlewares/input-validation-middleware/input-validation-middleware";
 import {authMiddleware, basicAuthMiddleware} from "../middlewares/basic-auth.middleware";
@@ -87,7 +87,7 @@ postsRouter.post('/',
 // POST add comment by post id
 postsRouter.post('/:postId/comments',
     authMiddleware,
-    commentContentValodation,
+    commentContentValidation,
     inputValidationMiddleware,
     async (req: RequestWithParamsAndBody<URIParamsCommentModel, createCommentModel>, res: Response) => {
         let foundPost = await postsService.getPostByID(req.params.postId.toString())

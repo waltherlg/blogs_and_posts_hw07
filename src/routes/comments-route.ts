@@ -4,7 +4,7 @@ import {commentService} from "../domain/comment-service";
 import {authMiddleware} from "../middlewares/basic-auth.middleware";
 import {usersService} from "../domain/users-service";
 import {isUserOwnerOfComments} from "../middlewares/other-midlevares";
-import {commentContentValodation} from "../middlewares/input-validation-middleware/input-validation-middleware";
+import {commentContentValidation} from "../middlewares/input-validation-middleware/input-validation-middleware";
 import {inputValidationMiddleware} from "../middlewares/input-validation-middleware/input-validation-middleware";
 
 export const commentsRouter = Router({})
@@ -40,7 +40,7 @@ commentsRouter.delete('/:commentId',
 commentsRouter.put('/:commentId',
     authMiddleware,
     isUserOwnerOfComments,
-    commentContentValodation,
+    commentContentValidation,
     inputValidationMiddleware,
     async (req: Request, res: Response) => {
         let updateComment = await commentService.updateComment(
