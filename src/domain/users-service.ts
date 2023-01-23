@@ -42,17 +42,7 @@ export const usersService = {
         return user
     },
 
-    async isLoginExist (login: string): Promise<boolean> {
-        const loginExist = await usersRepository.findUserByLoginOrEmail(login)
-        if (loginExist) return true
-        else return false
-    },
 
-    async isEmailExist (email: string): Promise<boolean> {
-        const emailExist = await usersRepository.findUserByLoginOrEmail(email)
-        if (emailExist) return true
-        else return false
-    },
 
     async getUserById(id: string): Promise<userType | null> {
         return await usersRepository.getUserById(id)
@@ -64,6 +54,18 @@ export const usersService = {
 
     async deleteAllUsers(): Promise<boolean>{
         return await usersRepository.deleteAllUsers()
+    },
+
+    async isLoginExist (login: string): Promise<boolean> {
+        const loginExist = await usersRepository.findUserByLoginOrEmail(login)
+        if (loginExist) return true
+        else return false
+    },
+
+    async isEmailExist (email: string): Promise<boolean> {
+        const emailExist = await usersRepository.findUserByLoginOrEmail(email)
+        if (emailExist) return true
+        else return false
     },
 
     async isEmailConfirmed(email: string): Promise<boolean> {
