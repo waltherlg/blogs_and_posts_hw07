@@ -70,6 +70,11 @@ export const usersService = {
         const user = await usersRepository.findUserByLoginOrEmail(email)
         if (user!.isConfirmed) return true
         else return false
+    },
 
+    async isCodeConfirmed(code: string): Promise<boolean> {
+        const user = await usersRepository.getUserByConfirmationCode(code)
+        if (user!.isConfirmed) return true
+        else return false
     }
 }

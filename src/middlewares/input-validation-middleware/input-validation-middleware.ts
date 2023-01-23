@@ -4,6 +4,7 @@ import {body, validationResult} from "express-validator";
 import {param} from "express-validator";
 import {blogsService} from "../../domain/blogs-service";
 import {usersService} from "../../domain/users-service";
+import {authService} from "../../domain/auth-service";
 
 
 
@@ -67,6 +68,20 @@ export const emailResendingValidation = body('email')
         return true
     }).bail().withMessage({"message": "email already confirmed", "field": "email" })
 
+export const confirmationCodeValidation = body('code')
+    .exists().bail().withMessage({message: "wright code", field: "code" })
+    .trim().bail().withMessage({message: "code is not string", field: "code" })
+    .custom(async value => {
+        const isCodeExist = await authService.isConfirmationCodeExist(value)
+        if (!isCodeExist) throw new Error
+        return true
+    }).withMessage({"message": "confirmation code not exist", "field": "code" })
+    .custom(async value => {
+        const isCodeConfirmed = await usersService.isCodeConfirmed(value)
+        if (isCodeConfirmed) throw new Error
+        return true
+    }).withMessage({"message": "already Confirmed", "field": "code" })
+
 // validation for blog
 export const nameValidation = body('name')
     .exists({checkFalsy: true, checkNull: true}).bail().withMessage({"message": "name not exist", "field": "name" })
@@ -109,6 +124,8 @@ export const existBlogIdValidation = body('blogId')
         if (!isBlogIdExist) throw new Error
         return true
     }).withMessage({"message": "blogId not exist", "field": "blogId" })
+
+
 
 export const commentContentValidation = body('content')
     .exists().bail().withMessage({message: "content not exist", field: "content" })

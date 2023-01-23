@@ -5,6 +5,7 @@ import {userAuthModel, userInputModel} from "../models/users-models";
 import {jwtService} from "../application/jwt-service";
 import {authMiddleware} from "../middlewares/basic-auth.middleware";
 import {
+    confirmationCodeValidation,
     emailResendingValidation,
     emailValidation,
     inputValidationMiddleware,
@@ -45,7 +46,8 @@ authRouter.post('/registration-email-resending',
     })
 
 authRouter.post('/registration-confirmation',
-
+    confirmationCodeValidation,
+    inputValidationMiddleware,
     async (req: Request, res: Response) => {
     const result = await authService.confirmEmail(req.body.code)
         if (result) {

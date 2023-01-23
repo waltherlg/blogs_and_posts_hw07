@@ -6,6 +6,7 @@ import {v4 as uuid4} from 'uuid'
 import add from 'date-fns/add'
 import {emailManager} from "../managers/email-manager";
 import {usersService} from "./users-service";
+import {confirmationCodeValidation} from "../middlewares/input-validation-middleware/input-validation-middleware";
 
 export const authService = {
 
@@ -49,11 +50,6 @@ export const authService = {
             return result
         }
         return false
-
-    },
-    async _generateHash(password: string, salt: string){
-        const hash = await bcrypt.hash(password, salt)
-        return hash
     },
 
     async registrationEmailResending(email: string){
@@ -73,6 +69,19 @@ export const authService = {
         }
         let result = await usersRepository.refreshConfirmationCode(refreshConfirmationData)
         return result
-    }
+    },
+
+    async isConfirmationCodeExist(code: string){
+        let user = await usersRepository.getUserByConfirmationCode(code)
+        if (user) return true
+        else return false
+    },
+
+    async _generateHash(password: string, salt: string){
+        const hash = await bcrypt.hash(password, salt)
+        return hash
+    },
+
+
 }
 
