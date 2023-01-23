@@ -6,17 +6,12 @@ export const emailManager = {
     },
 
     async sendEmailConfirmationMessage(user: any){
-        const confirmationCode = "https://some-front.com/confirm-registration?code=" + user.confirmationCode
+        const confirmationCode = '<a href="https://some-front.com/confirm-registration?code=${user.confirmationCode}">complete registration</a>'
         await emailAdapter.sendEmail(user.email, "confirmation code", confirmationCode)
     },
 
     async resendEmailConfirmationMessage(refreshConfirmationData: any){
-        const confirmationCode = "https://some-front.com/confirm-registration?code=" + refreshConfirmationData.confirmationCode
+        const confirmationCode = '<a href="https://some-front.com/confirm-registration?code=${refreshConfirmationData.confirmationCode}">complete registration</a>'
         await emailAdapter.sendEmail(refreshConfirmationData.email, "resending confirmation code", confirmationCode)
     }
 }
-
-// <h1>Thank for your registration</h1>
-// <p>To finish registration please follow the link below:
-//     <a href='https://somesite.com/confirm-email?code=your_confirmation_code'>complete registration</a>
-// </p>
