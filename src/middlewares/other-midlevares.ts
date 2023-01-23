@@ -19,7 +19,3 @@ export const isUserOwnerOfComments = async (req: Request, res: Response, next: N
     next()
 }
 
-export const isLoginExist = async (req: Request, res: Response, next: NextFunction) => {
-    const LoginExist = usersService.isLoginExist(req.body.login)
-
-}
