@@ -75,12 +75,12 @@ export const confirmationCodeValidation = body('code')
         const isCodeExist = await authService.isConfirmationCodeExist(value)
         if (!isCodeExist) throw new Error
         return true
-    }).withMessage({"message": "confirmation code not exist", "field": "code" })
+    }).bail().withMessage({"message": "confirmation code not exist", "field": "code" })
     .custom(async value => {
         const isCodeConfirmed = await usersService.isCodeConfirmed(value)
         if (isCodeConfirmed) throw new Error
         return true
-    }).withMessage({"message": "already Confirmed", "field": "code" })
+    }).bail().withMessage({"message": "already Confirmed", "field": "code" })
 
 // validation for blog
 export const nameValidation = body('name')
