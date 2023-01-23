@@ -32,7 +32,6 @@ export const loginValidation = body('login')
     .custom(async value => {
         const isLoginExist = await usersService.isLoginExist(value)
         if (isLoginExist) throw new Error
-        return true
     }).withMessage({"message": "login already exist", "field": "login" })
 
 export const passwordValidation = body('password')
@@ -49,7 +48,6 @@ export const emailValidation = body('email')
     .custom(async value => {
         const isEmailExist = await usersService.isEmailExist(value)
         if (isEmailExist) throw new Error
-        return true
     }).withMessage({"message": "email already exist", "field": "email" })
 
 export const emailResendingValidation = body('email')
@@ -60,12 +58,10 @@ export const emailResendingValidation = body('email')
     .custom(async value => {
         const isEmailExist = await usersService.isEmailExist(value)
         if (!isEmailExist) throw new Error
-        return true
     }).bail().withMessage({"message": "email not exist", "field": "email" })
     .custom(async value => {
         const isEmailConfirmed = await usersService.isEmailConfirmed(value)
         if (isEmailConfirmed) throw new Error
-        return true
     }).bail().withMessage({"message": "email already confirmed", "field": "email" })
 
 export const confirmationCodeValidation = body('code')
@@ -74,12 +70,10 @@ export const confirmationCodeValidation = body('code')
     .custom(async value => {
         const isCodeExist = await authService.isConfirmationCodeExist(value)
         if (!isCodeExist) throw new Error
-        return true
     }).bail().withMessage({"message": "confirmation code not exist", "field": "code" })
     .custom(async value => {
         const isCodeConfirmed = await usersService.isCodeConfirmed(value)
         if (isCodeConfirmed) throw new Error
-        return true
     }).bail().withMessage({"message": "already Confirmed", "field": "code" })
 
 // validation for blog
